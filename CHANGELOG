@@ -1,3 +1,8 @@
+v1.0.1:
+  date: 2015-7-16
+  changes:
+    - Fixed regular expression for dot files.
+
 v1.0.0:
   date: 2015-7-14
   changes:

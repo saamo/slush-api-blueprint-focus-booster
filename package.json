@@ -1,7 +1,7 @@
 {
     "name": "slush-api-blueprint-focus-booster",
     "description": "Slush generator for API Blueprint Focus Booster",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "homepage": "https://github.com/saamo/slush-api-blueprint-focus-booster",
     "author": {
         "name": "Samir Djellil",

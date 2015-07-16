@@ -50,7 +50,7 @@ gulp.task('default', function(done) {
       }
 
       gulp.src([
-          __dirname + templateDir + '/**',
+          __dirname + templateDir + '/**/*',
           '!' + __dirname + templateDir + '/.git',
           '!' + __dirname + configFile,
           '!' + __dirname + srcDir
