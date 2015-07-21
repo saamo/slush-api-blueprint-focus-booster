@@ -14,10 +14,13 @@ var gulp = require('gulp'),
   inquirer = require('inquirer');
 
 var templateDir = '/templates/app',
-  configFile = templateDir + '/config.example.js',
+  configExampleFile = templateDir + '/config.example.js',
+  configFile = './config.js',
   srcDir = templateDir + '/src/**';
 
-gulp.task('default', function(done) {
+$publishToApiary = function (answers) { return answers.publishToApiary };
+
+gulp.task('default', function (done) {
   inquirer.prompt([{
       type: 'confirm',
       name: 'createConfig',
@@ -28,18 +31,36 @@ gulp.task('default', function(done) {
       message: 'Copy example blueprints?'
     }, {
       type: 'confirm',
-      name: 'doIt',
-      message: 'Let\'s do it?'
+      name: 'publishToApiary',
+      message: 'Publish to Apiary.io?'
+    }, {
+      type: 'input',
+      name: 'apiaryName',
+      message: 'Apiary.io API name?',
+      when: $publishToApiary
+    }, {
+      type: 'input',
+      name: 'apiaryToken',
+      message: 'Apiary.io token?',
+      when: $publishToApiary
+    }, {
+      type: 'confirm',
+      name: 'makeItHappen',
+      message: 'Let\'s make it happen?'
     }],
-    function(answers) {
-      if (!answers.doIt) {
+    function (answers) {
+      if (!answers.makeItHappen) {
         return done();
       }
 
       if (answers.createConfig) {
-        gulp.src(__dirname + configFile)
-          .pipe(rename('./config.js'))
-          .pipe(conflict('./config.js'))
+        gulp.src(__dirname + configExampleFile)
+          .pipe(rename(configFile))
+          .pipe(conflict(configFile))
+          .pipe(template({
+            apiaryName: answers.apiaryName,
+            apiaryToken: answers.apiaryToken
+          }))
           .pipe(gulp.dest('./'))
       }
 
@@ -52,7 +73,7 @@ gulp.task('default', function(done) {
       gulp.src([
           __dirname + templateDir + '/**/*',
           '!' + __dirname + templateDir + '/.git',
-          '!' + __dirname + configFile,
+          '!' + __dirname + configExampleFile,
           '!' + __dirname + srcDir
         ], {
           dot: true
